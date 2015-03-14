@@ -15,13 +15,11 @@ description: 在测试在博文中插入代码时发现，使用缩进方式插�
 对于如我这般的强迫症患者，想要显示行号时却发现没有行号，自然是百般的不自在，后经过搜索后发现，Markdown还支持显示声明Code Block的方式插入代码。
 <!-- more -->
 其语法如下：
-<font size="2" >
+{% codeblock %}
+{% raw %}{% codeblock [lang:language] [title] [url] [link text] [start:#] [mark:#,#-#] [linenos:false] %}{% endraw %}
+code snippet
+{% raw %}{% endcodeblock %}{% endraw %}{% endcodeblock %}
 
-> { % codeblock [lang:language] [title] [url] [link text] [start:#] [mark:#,#-#] [linenos:false] % }
-> code snippet
-> { % endcodeblock % }
-
-</font>
 关于Code Block在Markdown中使用可以参考[这里](http://octopress.org/docs/plugins/codeblock/)。
 使用codeblock插入的代码，在Hexo中可正常显示行号，并且可以选择编程语言，增加代码标题，链接等。
 如下边这段代码使用codeblock方式插入：
