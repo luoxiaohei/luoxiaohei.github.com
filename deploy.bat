@@ -1,8 +1,6 @@
 @echo off
-echo Start clean
-cmd /c hexo clean
-echo Start generate
-cmd /c hexo g
-echo Start deploy
-cmd /c hexo d
-cmd /c hexo clean
+echo Start deploy blog.
+cmd /c deploy_blog > deploy_blog.log
+echo Start upload source files.
+cmd /c upload_source > upload_source.log
+echo All work done.
