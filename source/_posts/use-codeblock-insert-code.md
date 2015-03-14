@@ -17,7 +17,7 @@ description: 在测试在博文中插入代码时发现，使用缩进方式插�
 其语法如下：
 
     {% raw %}{% codeblock [lang:language] [title] [url] [link text] %}{% endraw %}
-    code snippet
+    {% raw %}code snippet{% endraw %}
     {% raw %}{% endcodeblock %}{% endraw %}
 
 关于Codeblock在Markdown中使用可以参考[这里](http://octopress.org/docs/plugins/codeblock/)。
