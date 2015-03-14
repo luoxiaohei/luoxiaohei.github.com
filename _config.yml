@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: LuoXiaohei's Blog
+title: LuoXiaohei's blog
 subtitle: 永远年轻，永远热泪盈眶。
 description: lshang's blog | code | virus | analysis | smVirus
 author: lSHANG
@@ -62,7 +62,12 @@ pagination_dir: page
 # Extensions
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/
+plugins:
+- hexo-generator-feed
+- hexo-generator-sitemap
 theme: jacman
+stylus:
+  compress: true
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
