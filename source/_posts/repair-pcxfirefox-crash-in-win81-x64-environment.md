@@ -36,7 +36,7 @@ start             end                 module name
 从上图代码可知，该地址为SHGetSpecialFolderPathW函数地址，对比代码可知，该函数被inline hook。
 进而可以确认崩溃原因是hook过程中将`00007ffa'5bbab9fd`处一字节覆盖为0，导致cpu解释指令出错，产生异常并引起崩溃。
 在Windbg中将其修正为48h后恢复进程执行，文件选择框正常被打开。
-![](http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/is-ok.jpg)
+![](http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/fix-ok.jpg)
 ###定位HOOK来源
 得知崩溃原因后，下一步开始定位是谁hook了SHGetSpecialFolderPathW函数
 首先重新加载运行Firefox.exe，然后执行sxe ld:shell32.dll命令使调试器在加载该模块后中断程序
