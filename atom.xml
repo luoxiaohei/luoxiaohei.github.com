@@ -69,16 +69,16 @@
     <link href="http://smvirus.com/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/"/>
     <id>http://smvirus.com/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/</id>
     <published>2014-05-06T11:19:46.000Z</published>
-    <updated>2015-03-30T13:19:53.000Z</updated>
+    <updated>2015-03-30T13:23:14.000Z</updated>
     <content type="html"><![CDATA[<p>最近在使用PcxFirefox浏览器时，发现其x64版本在Win8.1系统中一旦触发文件选择框，如下载/打开文件时，浏览器就会崩溃。</p>
 <p>在网上搜索无果后，只好祭出神器Windbg查找原因。在这里对两位帮忙定位问题的同事bianfeng和KeyKernel由衷表示感谢。<br><a id="more"></a></p>
-<h2 id="问题现象">问题现象</h2><p><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/crash.jpg" alt=""></p>
-<h2 id="问题定位">问题定位</h2><h3 id="捕获异常">捕获异常</h3><p>首先使用Windbg重新加载崩溃程序Firefox.exe，然后执行g命令执行程序并触发崩溃，Windbg捕获到如下异常<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/windbg_crash.jpg" alt=""><br>得知错误代码出现在<code>00007ffa&#39;5bbab9fd</code>，在当前地址反汇编得到如下代码<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/u-rip.jpg" alt=""></p>
+<h2 id="问题现象">问题现象</h2><p><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/crash.jpg" alt=""></p>
+<h2 id="问题定位">问题定位</h2><h3 id="捕获异常">捕获异常</h3><p>首先使用Windbg重新加载崩溃程序Firefox.exe，然后执行g命令执行程序并触发崩溃，Windbg捕获到如下异常<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/windbg_crash.jpg" alt=""><br>得知错误代码出现在<code>00007ffa&#39;5bbab9fd</code>，在当前地址反汇编得到如下代码<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/u-rip.jpg" alt=""></p>
 <h3 id="定位异常模块">定位异常模块</h3><p>查看当前出错模块路径如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span><span class="symbol">:</span><span class="number">000</span>&gt; lmf a rip</span><br><span class="line">start             <span class="keyword">end</span>                 <span class="class"><span class="keyword">module</span> <span class="title">name</span></span></span><br><span class="line"><span class="number">00007</span>ffa<span class="string">`5b9f0000 00007ffa`</span><span class="number">5</span>ce0700<span class="number">0</span>   <span class="constant">SHELL32</span>  <span class="constant">C</span><span class="symbol">:</span>\windows\system32\<span class="constant">SHELL32</span>.dll</span><br></pre></td></tr></table></figure></p>
-<h3 id="分析异常代码">分析异常代码</h3><p>使用IDA Pro反汇编该模块后，发现该地址原始反汇编代码如下，与正在执行代码不同<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-code.jpg" alt=""><br>向前遍历发现，模块中代码从<code>00007ffa&#39;5bbab9f0</code>处开始被覆写了14字节<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/u-b9f0.jpg" alt=""><br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-b9f0.jpg" alt=""></p>
-<h3 id="确认异常原因">确认异常原因</h3><p>从上图代码可知，该地址为SHGetSpecialFolderPathW函数地址，对比代码可知，该函数被inline hook。<br>进而可以确认崩溃原因是hook过程中将<code>00007ffa&#39;5bbab9fd</code>处一字节覆盖为0，导致cpu解释指令出错，产生异常并引起崩溃。<br>在Windbg中将其修正为48h后恢复进程执行，文件选择框正常被打开。<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/fix-ok.jpg" alt=""></p>
-<h3 id="定位HOOK来源">定位HOOK来源</h3><p>得知崩溃原因后，下一步开始定位是谁hook了SHGetSpecialFolderPathW函数<br>首先重新加载运行Firefox.exe，然后执行sxe ld:shell32.dll命令使调试器在加载该模块后中断程序<br>中断后对<code>00007ffa&#39;5bbab9f0</code>处下写入断点，然后继续执行程序，发现程序被中断在如下地址<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ba-b9f0.jpg" alt=""><br>查看该地址模块路径如下<br><figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0:000&gt; lmf a rip</span><br><span class="line">start             end                 module name</span><br><span class="line">00000000`63000000 00000000`6300a000   tmemutil D:<span class="command">\MyTools</span><span class="command">\Tools</span><span class="command">\UserSoft</span><span class="command">\PcxFireFox</span><span class="command">\tmemutil</span>.dll</span><br></pre></td></tr></table></figure></p>
-<h3 id="分析HOOK代码">分析HOOK代码</h3><p>使用IDA Pro反汇编该模块后，发现正是该地址上下文代码hook了SHGetSpecialFolderPathW函数<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-hook.jpg" alt=""></p>
+<h3 id="分析异常代码">分析异常代码</h3><p>使用IDA Pro反汇编该模块后，发现该地址原始反汇编代码如下，与正在执行代码不同<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-code.jpg" alt=""><br>向前遍历发现，模块中代码从<code>00007ffa&#39;5bbab9f0</code>处开始被覆写了14字节<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/u-b9f0.jpg" alt=""><br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-b9f0.jpg" alt=""></p>
+<h3 id="确认异常原因">确认异常原因</h3><p>从上图代码可知，该地址为SHGetSpecialFolderPathW函数地址，对比代码可知，该函数被inline hook。<br>进而可以确认崩溃原因是hook过程中将<code>00007ffa&#39;5bbab9fd</code>处一字节覆盖为0，导致cpu解释指令出错，产生异常并引起崩溃。<br>在Windbg中将其修正为48h后恢复进程执行，文件选择框正常被打开。<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/fix-ok.jpg" alt=""></p>
+<h3 id="定位HOOK来源">定位HOOK来源</h3><p>得知崩溃原因后，下一步开始定位是谁hook了SHGetSpecialFolderPathW函数<br>首先重新加载运行Firefox.exe，然后执行sxe ld:shell32.dll命令使调试器在加载该模块后中断程序<br>中断后对<code>00007ffa&#39;5bbab9f0</code>处下写入断点，然后继续执行程序，发现程序被中断在如下地址<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ba-b9f0.jpg" alt=""><br>查看该地址模块路径如下<br><figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0:000&gt; lmf a rip</span><br><span class="line">start             end                 module name</span><br><span class="line">00000000`63000000 00000000`6300a000   tmemutil D:<span class="command">\MyTools</span><span class="command">\Tools</span><span class="command">\UserSoft</span><span class="command">\PcxFireFox</span><span class="command">\tmemutil</span>.dll</span><br></pre></td></tr></table></figure></p>
+<h3 id="分析HOOK代码">分析HOOK代码</h3><p>使用IDA Pro反汇编该模块后，发现正是该地址上下文代码hook了SHGetSpecialFolderPathW函数<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-hook.jpg" alt=""></p>
 <p>该段代码是将hook代码写入到SHGetSpecialFolderPathW函数起始处，但因为其使用的跳转方式为</p>
 <blockquote>
 <p>jmp qword ptr [xxxxxxxx]</p>
@@ -96,9 +96,9 @@
 <blockquote>
 <p>48 b8 xx xx xx xx xx xx xx xx<br>ff e0</p>
 </blockquote>
-<p>这样仅需覆写12个字节即可完成hook，可以解决掉覆盖正常代码的问题。<br>因为没有找到可以直接patch64位程序的工具（Windbg/IDA Pro的patch功能均不支持带64位寄存器的指令），固只好在IDA Pro中进行Hex修改，然后通过WinHex保存到文件中。<br>修正后的代码如下<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/fix-hook.jpg" alt=""></p>
+<p>这样仅需覆写12个字节即可完成hook，可以解决掉覆盖正常代码的问题。<br>因为没有找到可以直接patch64位程序的工具（Windbg/IDA Pro的patch功能均不支持带64位寄存器的指令），固只好在IDA Pro中进行Hex修改，然后通过WinHex保存到文件中。<br>修正后的代码如下<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/fix-hook.jpg" alt=""></p>
 <p>需要注意的是，在hook函数内部会首先恢复SHGetSpecialFolderPathW的代码，调用完成后会重新inline hook，故需要对恢复hook的代码进行相同的修改。</p>
-<h3 id="成果展示">成果展示</h3><p>完成上述步骤后，用修改后的dll文件替换掉原dll文件，再次测试触发文件选择框时，已可正常打开文件选择框。<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/repair-pcxfirefox-crash-in-win81-x64-environment/is-ok.jpg" alt=""></p>
+<h3 id="成果展示">成果展示</h3><p>完成上述步骤后，用修改后的dll文件替换掉原dll文件，再次测试触发文件选择框时，已可正常打开文件选择框。<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/is-ok.jpg" alt=""></p>
 <h2 id="修正后文件">修正后文件</h2><p>版本：pcxFirefox-28.0-zhCN-vc2010-x64-sse2-betterpgo-140318<br>md5：7b6f5ce613e8d8c9e8b91ca4f6b6cc9039b0a6f5<br>下载：<a href="http://pan.baidu.com/s/1fCfsM" target="_blank" rel="external">temeutil.dll</a></p>
 ]]></content>
     <summary type="html">
@@ -117,13 +117,13 @@
     <link href="http://smvirus.com/2014/04/08/solove-chinese-characters-display-as-squares-in-sublime-text/"/>
     <id>http://smvirus.com/2014/04/08/solove-chinese-characters-display-as-squares-in-sublime-text/</id>
     <published>2014-04-08T14:38:31.000Z</published>
-    <updated>2015-03-30T13:19:54.000Z</updated>
+    <updated>2015-03-30T13:23:16.000Z</updated>
     <content type="html"><![CDATA[<p>在笔记本上使用Sublime Text 3，发现其标签页及命令行中的中文均显示为方块。</p>
 <p>本文记录了该问题的成因及解决方案。<br><a id="more"></a></p>
-<h2 id="问题现象">问题现象</h2><p><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/solove-chinese-characters-display-as-squares-in-sublime-text/squares.jpg" alt=""></p>
-<h2 id="问题成因">问题成因</h2><p>开始以为是编码问题导致的中文乱码，但是已经安装了ConvertToUTF8插件，而且编辑框内中文并未乱码，只有标签页和命令行乱码。<br>后经过搜索，发现有人提到如果修改了系统的显示缩放级别，将字体改的太大，则可能造成ST3版本的标签页放不下，进而显示成方块。<br>因为我的电脑是1920*1080的分辨率，系统默认将缩放级别调整为了125%。<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/solove-chinese-characters-display-as-squares-in-sublime-text/125%25.jpg" alt=""></p>
-<h2 id="解决方案">解决方案</h2><p>将缩放级别更改为100%后，在ST3中标签页及命令行已经可以正常显示中文了。<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/solove-chinese-characters-display-as-squares-in-sublime-text/100%25.jpg" alt=""></p>
-<h2 id="成果展示">成果展示</h2><p><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/blog/solove-chinese-characters-display-as-squares-in-sublime-text/normal.jpg" alt=""></p>
+<h2 id="问题现象">问题现象</h2><p><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/solove-chinese-characters-display-as-squares-in-sublime-text/squares.jpg" alt=""></p>
+<h2 id="问题成因">问题成因</h2><p>开始以为是编码问题导致的中文乱码，但是已经安装了ConvertToUTF8插件，而且编辑框内中文并未乱码，只有标签页和命令行乱码。<br>后经过搜索，发现有人提到如果修改了系统的显示缩放级别，将字体改的太大，则可能造成ST3版本的标签页放不下，进而显示成方块。<br>因为我的电脑是1920*1080的分辨率，系统默认将缩放级别调整为了125%。<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/solove-chinese-characters-display-as-squares-in-sublime-text/125%25.jpg" alt=""></p>
+<h2 id="解决方案">解决方案</h2><p>将缩放级别更改为100%后，在ST3中标签页及命令行已经可以正常显示中文了。<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/solove-chinese-characters-display-as-squares-in-sublime-text/100%25.jpg" alt=""></p>
+<h2 id="成果展示">成果展示</h2><p><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/solove-chinese-characters-display-as-squares-in-sublime-text/normal.jpg" alt=""></p>
 ]]></content>
     <summary type="html">
     <![CDATA[在笔记本上使用Sublime Text 3，发现其标签页及命令行中的中文均显示为方块了。]]>
