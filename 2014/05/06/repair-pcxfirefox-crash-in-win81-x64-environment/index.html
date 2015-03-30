@@ -1,0 +1,558 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>修复Win8.1 x64环境下PcxFirefox打开文件崩溃 | LuoXiaohei&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="lSHANG">
+    
+
+    
+    <meta name="description" content="最近在使用第三方编译版的Firefox浏览器PcxFirefox时，发现其x64版本在Win8.1系统中一旦触发文件选择框，如下载/打开文件时，浏览器就会崩溃。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="修复Win8.1 x64环境下PcxFirefox打开文件崩溃">
+<meta property="og:url" content="http://smvirus.com/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/index.html">
+<meta property="og:site_name" content="LuoXiaohei's blog">
+<meta property="og:description" content="最近在使用第三方编译版的Firefox浏览器PcxFirefox时，发现其x64版本在Win8.1系统中一旦触发文件选择框，如下载/打开文件时，浏览器就会崩溃。">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/crash.jpg">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/windbg_crash.jpg">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/u-rip.jpg">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-code.jpg">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/u-b9f0.jpg">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-b9f0.jpg">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/fix-ok.jpg">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ba-b9f0.jpg">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-hook.jpg">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/fix-hook.jpg">
+<meta property="og:image" content="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/is-ok.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="修复Win8.1 x64环境下PcxFirefox打开文件崩溃">
+<meta name="twitter:description" content="最近在使用第三方编译版的Firefox浏览器PcxFirefox时，发现其x64版本在Win8.1系统中一旦触发文件选择框，如下载/打开文件时，浏览器就会崩溃。">
+<meta name="twitter:creator" content="@CN_LShang">
+
+    
+    <link rel="alternative" href="/atom.xml" title="LuoXiaohei&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="LuoXiaohei&#39;s blog" title="LuoXiaohei&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="LuoXiaohei&#39;s blog">LuoXiaohei&#39;s blog</a></h1>
+				<h2 class="blog-motto">永远年轻，永远热泪盈眶！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:smvirus.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/" title="修复Win8.1 x64环境下PcxFirefox打开文件崩溃" itemprop="url">修复Win8.1 x64环境下PcxFirefox打开文件崩溃</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://smvirus.com/about" title="lSHANG" target="_blank" itemprop="author">lSHANG</a>
+		
+  <p class="article-time">
+    <time datetime="2014-05-06T11:19:46.000Z" itemprop="datePublished"> 发表于 2014-05-06</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题现象"><span class="toc-number">1.</span> <span class="toc-text">问题现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题定位"><span class="toc-number">2.</span> <span class="toc-text">问题定位</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#捕获异常"><span class="toc-number">2.1.</span> <span class="toc-text">捕获异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定位异常模块"><span class="toc-number">2.2.</span> <span class="toc-text">定位异常模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分析异常代码"><span class="toc-number">2.3.</span> <span class="toc-text">分析异常代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#确认异常原因"><span class="toc-number">2.4.</span> <span class="toc-text">确认异常原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定位HOOK来源"><span class="toc-number">2.5.</span> <span class="toc-text">定位HOOK来源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分析HOOK代码"><span class="toc-number">2.6.</span> <span class="toc-text">分析HOOK代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">3.</span> <span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#成果展示"><span class="toc-number">3.1.</span> <span class="toc-text">成果展示</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修正后文件"><span class="toc-number">4.</span> <span class="toc-text">修正后文件</span></a></li></ol>
+		
+		</div>
+		
+		<p>最近在使用PcxFirefox浏览器时，发现其x64版本在Win8.1系统中一旦触发文件选择框，如下载/打开文件时，浏览器就会崩溃。</p>
+<p>在网上搜索无果后，只好祭出神器Windbg查找原因。在这里对两位帮忙定位问题的同事bianfeng和KeyKernel由衷表示感谢。<br><a id="more"></a></p>
+<h2 id="问题现象">问题现象</h2><p><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/crash.jpg" alt=""></p>
+<h2 id="问题定位">问题定位</h2><h3 id="捕获异常">捕获异常</h3><p>首先使用Windbg重新加载崩溃程序Firefox.exe，然后执行g命令执行程序并触发崩溃，Windbg捕获到如下异常<br><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/windbg_crash.jpg" alt=""><br>得知错误代码出现在<code>00007ffa&#39;5bbab9fd</code>，在当前地址反汇编得到如下代码<br><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/u-rip.jpg" alt=""></p>
+<h3 id="定位异常模块">定位异常模块</h3><p>查看当前出错模块路径如下<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span><span class="symbol">:</span><span class="number">000</span>&gt; lmf a rip</span><br><span class="line">start             <span class="keyword">end</span>                 <span class="class"><span class="keyword">module</span> <span class="title">name</span></span></span><br><span class="line"><span class="number">00007</span>ffa<span class="string">`5b9f0000 00007ffa`</span><span class="number">5</span>ce0700<span class="number">0</span>   <span class="constant">SHELL32</span>  <span class="constant">C</span><span class="symbol">:</span>\windows\system32\<span class="constant">SHELL32</span>.dll</span><br></pre></td></tr></table></figure></p>
+<h3 id="分析异常代码">分析异常代码</h3><p>使用IDA Pro反汇编该模块后，发现该地址原始反汇编代码如下，与正在执行代码不同<br><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-code.jpg" alt=""><br>向前遍历发现，模块中代码从<code>00007ffa&#39;5bbab9f0</code>处开始被覆写了14字节<br><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/u-b9f0.jpg" alt=""><br><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-b9f0.jpg" alt=""></p>
+<h3 id="确认异常原因">确认异常原因</h3><p>从上图代码可知，该地址为SHGetSpecialFolderPathW函数地址，对比代码可知，该函数被inline hook。<br>进而可以确认崩溃原因是hook过程中将<code>00007ffa&#39;5bbab9fd</code>处一字节覆盖为0，导致cpu解释指令出错，产生异常并引起崩溃。<br>在Windbg中将其修正为48h后恢复进程执行，文件选择框正常被打开。<br><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/fix-ok.jpg" alt=""></p>
+<h3 id="定位HOOK来源">定位HOOK来源</h3><p>得知崩溃原因后，下一步开始定位是谁hook了SHGetSpecialFolderPathW函数<br>首先重新加载运行Firefox.exe，然后执行sxe ld:shell32.dll命令使调试器在加载该模块后中断程序<br>中断后对<code>00007ffa&#39;5bbab9f0</code>处下写入断点，然后继续执行程序，发现程序被中断在如下地址<br><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ba-b9f0.jpg" alt=""><br>查看该地址模块路径如下<br><figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0:000&gt; lmf a rip</span><br><span class="line">start             end                 module name</span><br><span class="line">00000000`63000000 00000000`6300a000   tmemutil D:<span class="command">\MyTools</span><span class="command">\Tools</span><span class="command">\UserSoft</span><span class="command">\PcxFireFox</span><span class="command">\tmemutil</span>.dll</span><br></pre></td></tr></table></figure></p>
+<h3 id="分析HOOK代码">分析HOOK代码</h3><p>使用IDA Pro反汇编该模块后，发现正是该地址上下文代码hook了SHGetSpecialFolderPathW函数<br><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/ida-hook.jpg" alt=""></p>
+<p>该段代码是将hook代码写入到SHGetSpecialFolderPathW函数起始处，但因为其使用的跳转方式为</p>
+<blockquote>
+<p>jmp qword ptr [xxxxxxxx]</p>
+</blockquote>
+<p>对应Opcode为</p>
+<blockquote>
+<p>ff 25 00 00 00 00 xx xx xx xx xx xx xx xx</p>
+</blockquote>
+<p>共需14字节。<br>从前文中可知SHGetSpecialFolderPathW函数地址距离之后代码只有13字节，故使用这种跳转方式进行hook，会覆盖掉函数中的代码，进而导致异常，引起崩溃。</p>
+<h2 id="解决方案">解决方案</h2><p>因为该问题是由于temeutil模块对SHGetSpecialFolderPathW函数进行hook时使用了错误的跳转方式导致的，故考虑修改其跳转方式。<br>在64位系统下，除上述跳转方式外，还可使用如下方式进行绝对地址跳转</p>
+<blockquote>
+<p>mov rax,xxxxxxxx<br>jmp rax</p>
+</blockquote>
+<p>对应Opcode为</p>
+<blockquote>
+<p>48 b8 xx xx xx xx xx xx xx xx<br>ff e0</p>
+</blockquote>
+<p>这样仅需覆写12个字节即可完成hook，可以解决掉覆盖正常代码的问题。<br>因为没有找到可以直接patch64位程序的工具（Windbg/IDA Pro的patch功能均不支持带64位寄存器的指令），固只好在IDA Pro中进行Hex修改，然后通过WinHex保存到文件中。<br>修正后的代码如下<br><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/fix-hook.jpg" alt=""></p>
+<p>需要注意的是，在hook函数内部会首先恢复SHGetSpecialFolderPathW的代码，调用完成后会重新inline hook，故需要对恢复hook的代码进行相同的修改。</p>
+<h3 id="成果展示">成果展示</h3><p>完成上述步骤后，用修改后的dll文件替换掉原dll文件，再次测试触发文件选择框时，已可正常打开文件选择框。<br><img src="http://smvirus.com/img/blog/repair-pcxfirefox-crash-in-win81-x64-environment/is-ok.jpg" alt=""></p>
+<h2 id="修正后文件">修正后文件</h2><p>版本：pcxFirefox-28.0-zhCN-vc2010-x64-sse2-betterpgo-140318<br>md5：7b6f5ce613e8d8c9e8b91ca4f6b6cc9039b0a6f5<br>下载：<a href="http://pan.baidu.com/s/1fCfsM" target="_blank" rel="external">temeutil.dll</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/调试笔记/">调试笔记</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Windbg/">Windbg</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://smvirus.com/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/" data-title="修复Win8.1 x64环境下PcxFirefox打开文件崩溃 | LuoXiaohei&#39;s blog" data-tsina="1759369187" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/06/19/python-script-written-with-patch/" title="用Python写Patch脚本">
+  <strong>上一篇：</strong><br/>
+  <span>
+  用Python写Patch脚本</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/04/08/solove-chinese-characters-display-as-squares-in-sublime-text/"  title="解决Sublime Text中文字符显示为方块">
+ <strong>下一篇：</strong><br/> 
+ <span>解决Sublime Text中文字符显示为方块
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/" data-title="修复Win8.1 x64环境下PcxFirefox打开文件崩溃" data-url="http://smvirus.com/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/学习笔记/" title="学习笔记">学习笔记<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/病毒分析/" title="病毒分析">病毒分析<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/调试笔记/" title="调试笔记">调试笔记<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/问题记录/" title="问题记录">问题记录<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Markdown/" title="Markdown">Markdown<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Virus-Analysis/" title="Virus Analysis">Virus Analysis<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Worm/" title="Worm">Worm<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">3</span></li></ul>
+  </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        <table cellspacing ="20">
+            <tr>
+                <td><a href="http://www.52pojie.cn/" target="_blank" title="吾爱破解论坛"><img src="http://smvirus.com/img/links/52logo.gif"></img> </a></td>
+                <td><a href="http://www.sicaril.com/" target="_blank" title="西卡学院"><img src="http://smvirus.com/img/links/sicaril.gif"></img> </a></td>
+            </tr>
+            <tr>
+                <td><a href="http://www.80cert.com/" target="_blank" title="80cert"><img src="http://smvirus.com/img/links/80cert.gif"></img> </a> </td>
+                <td><a href="http://www.unpack.cn/" target="_blank" title="一蓑烟雨论坛"><img src="http://smvirus.com/img/links/fly.gif"></img> </a></td>
+            </tr>
+             <tr>
+                <td><a href="http://www.peshell.com/" target="_blank" title="Peace's Blog"><img src="http://smvirus.com/img/links/peshell.gif"></img> </a></td>
+                <td><a href="http://www.keykernel.org/" target="_blank" title="KeyKernel's Blog"><img src="http://smvirus.com/img/links/keykernel.gif"> </img> </a></td>
+            </tr>
+            <tr>
+                <td><a href="http://www.diaosicode.com/" target="_blank"title="屌丝代码"><img src="http://smvirus.com/img/links/dslogo.gif"></img> </a></td>
+                <td style="white-space: nowrap"><a href="http://hi.baidu.com/willjhw" target="_blank" title="Willj's Blog">WillJ's blog</a></td>
+            </tr>
+        </table>
+        <hr>
+        <table>
+            <tr>
+                <td style="white-space: nowrap"><a href="http://ctext.org/zh">中国哲学书电子化计划</a></td>
+            </tr>
+            <tr>
+                <td style="white-space: nowrap"><a href="http://www.nlc.gov.cn">中国国家数字图书馆</a></td>
+            </tr>
+        </table>
+    </ul>
+</div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=350&height=119&fansRow=2&ptype=0&speed=0&skin=3&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1759369187&verifier=b46c844b&dpc=1"></iframe>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello, I&#39;m lSHANG in China. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/lshang" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/LuoXiaohei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/CN_LShang" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:CN_LShang@QQ.CoM" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://smvirus.com/about" target="_blank" title="lSHANG">lSHANG</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+    c.click();
+    
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"smVirus"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-49752704-1', 'smvirus.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+</html>

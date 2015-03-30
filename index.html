@@ -1,0 +1,731 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>LuoXiaohei&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="lSHANG">
+    
+
+    
+    <meta name="description" content="lshang&apos;s blog | code | virus | analysis | smVirus">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LuoXiaohei's blog">
+<meta property="og:url" content="http://smvirus.com/index.html">
+<meta property="og:site_name" content="LuoXiaohei's blog">
+<meta property="og:description" content="lshang&apos;s blog | code | virus | analysis | smVirus">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LuoXiaohei's blog">
+<meta name="twitter:description" content="lshang&apos;s blog | code | virus | analysis | smVirus">
+<meta name="twitter:creator" content="@CN_LShang">
+
+    
+    <link rel="alternative" href="/atom.xml" title="LuoXiaohei&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="LuoXiaohei&#39;s blog" title="LuoXiaohei&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="LuoXiaohei&#39;s blog">LuoXiaohei&#39;s blog</a></h1>
+				<h2 class="blog-motto">永远年轻，永远热泪盈眶！</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:smvirus.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main">
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/03/14/anie-vbs-worm-code-analysis/" title="VBS蠕虫 Anie 代码分析" itemprop="url">VBS蠕虫 Anie 代码分析</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://smvirus.com/about" title="lSHANG" target="_blank" itemprop="author">lSHANG</a>
+		
+  <p class="article-time">
+    <time datetime="2015-03-14T08:49:47.000Z" itemprop="datePublished"> 发表于 2015-03-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Anie 是一个VBS蠕虫，命名源于其会创建一系列名为 Annie 的文件，鉴于计算机病毒命名时不应直接使用病毒样本中出现的字符串，所以将其命名为 Anie。</p>
+<p>该病毒最早出现的时间为2013年，国家为印尼。<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2015/03/14/anie-vbs-worm-code-analysis/#more">阅读更多</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/病毒分析/">病毒分析</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Virus-Analysis/">Virus Analysis</a><a href="/tags/Worm/">Worm</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2015/03/14/anie-vbs-worm-code-analysis/#comments" class="ds-thread-count comments-count-link" data-thread-key="2015/03/14/anie-vbs-worm-code-analysis/" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/06/19/python-script-written-with-patch/" title="用Python写Patch脚本" itemprop="url">用Python写Patch脚本</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://smvirus.com/about" title="lSHANG" target="_blank" itemprop="author">lSHANG</a>
+		
+  <p class="article-time">
+    <time datetime="2014-06-19T09:15:35.000Z" itemprop="datePublished"> 发表于 2014-06-19</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>近日对某家族样本虚拟机检测进行分析，应同事要求，写了个Python脚本用于Patch及Load该家族样本。</p>
+<p>因之前没有相关经验，在编写过程中遇到一些问题，现将其整理如下。<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2014/06/19/python-script-written-with-patch/#more">阅读更多</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/学习笔记/">学习笔记</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Python/">Python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2014/06/19/python-script-written-with-patch/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/06/19/python-script-written-with-patch/" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/" title="修复Win8.1 x64环境下PcxFirefox打开文件崩溃" itemprop="url">修复Win8.1 x64环境下PcxFirefox打开文件崩溃</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://smvirus.com/about" title="lSHANG" target="_blank" itemprop="author">lSHANG</a>
+		
+  <p class="article-time">
+    <time datetime="2014-05-06T11:19:46.000Z" itemprop="datePublished"> 发表于 2014-05-06</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>最近在使用PcxFirefox浏览器时，发现其x64版本在Win8.1系统中一旦触发文件选择框，如下载/打开文件时，浏览器就会崩溃。</p>
+<p>在网上搜索无果后，只好祭出神器Windbg查找原因。在这里对两位帮忙定位问题的同事bianfeng和KeyKernel由衷表示感谢。<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/#more">阅读更多</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/调试笔记/">调试笔记</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Windbg/">Windbg</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/04/08/solove-chinese-characters-display-as-squares-in-sublime-text/" title="解决Sublime Text中文字符显示为方块" itemprop="url">解决Sublime Text中文字符显示为方块</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://smvirus.com/about" title="lSHANG" target="_blank" itemprop="author">lSHANG</a>
+		
+  <p class="article-time">
+    <time datetime="2014-04-08T14:38:31.000Z" itemprop="datePublished"> 发表于 2014-04-08</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在笔记本上使用Sublime Text 3，发现其标签页及命令行中的中文均显示为方块。</p>
+<p>本文记录了该问题的成因及解决方案。<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2014/04/08/solove-chinese-characters-display-as-squares-in-sublime-text/#more">阅读更多</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/问题记录/">问题记录</a>
+</div>
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2014/04/08/solove-chinese-characters-display-as-squares-in-sublime-text/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/04/08/solove-chinese-characters-display-as-squares-in-sublime-text/" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/04/05/use-codeblock-insert-code/" title="使用codeblock插入代码" itemprop="url">使用codeblock插入代码</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://smvirus.com/about" title="lSHANG" target="_blank" itemprop="author">lSHANG</a>
+		
+  <p class="article-time">
+    <time datetime="2014-04-05T09:13:45.000Z" itemprop="datePublished"> 发表于 2014-04-05</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在测试在博文中插入代码时发现，使用缩进方式插入代码，即使在Hexo的配置文件中将line_number设置为true，代码框上也不会显示行号。<br>如下边这段代码直接使用缩进方式插入：</p>
+<pre><code><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>{
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</code></pre><p>对于如我这般的强迫症患者，想要显示行号时却发现没有行号，自然是百般的不自在，后经过搜索后发现，Markdown还支持显示声明Codeblock的方式插入代码。<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2014/04/05/use-codeblock-insert-code/#more">阅读更多</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/学习笔记/">学习笔记</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Hexo/">Hexo</a><a href="/tags/Markdown/">Markdown</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2014/04/05/use-codeblock-insert-code/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/04/05/use-codeblock-insert-code/" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/04/03/independent-blog-tour/" title="独立博客之旅" itemprop="url">独立博客之旅</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="http://smvirus.com/about" title="lSHANG" target="_blank" itemprop="author">lSHANG</a>
+		
+  <p class="article-time">
+    <time datetime="2014-04-03T05:19:15.000Z" itemprop="datePublished"> 发表于 2014-04-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>一直以来没有写博客的习惯，发现很多问题在解决之后由于没有及时记录和总结，导致再次遇到时仍然无法解决，从而陷入了死循环中。遂决心开博客写文章，记录及总结近来遇到的问题及产生的想法。</p>
+<p><strong> Hexo博客配置参考： </strong></p>
+<ul>
+<li><a href="http://ibruce.info/2013/11/22/hexo-your-blog/" target="_blank" rel="external">hexo你的博客</a></li>
+<li><a href="http://kescoode.com/2013/11/17/github-page-and-hexo-guide/" target="_blank" rel="external">Github Pages与Hexo建个人博客流程 </a></li>
+</ul>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+	  	<span></span>
+		<a href="/2014/04/03/independent-blog-tour/#comments" class="ds-thread-count comments-count-link" data-thread-key="2014/04/03/independent-blog-tour/" data-count-type="comments">&nbsp;</a>
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/学习笔记/" title="学习笔记">学习笔记<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/病毒分析/" title="病毒分析">病毒分析<sup>1</sup></a></li>
+		  
+		
+		  
+		
+		  
+			<li><a href="/categories/调试笔记/" title="调试笔记">调试笔记<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/问题记录/" title="问题记录">问题记录<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Markdown/" title="Markdown">Markdown<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Windbg/" title="Windbg">Windbg<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Virus-Analysis/" title="Virus Analysis">Virus Analysis<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Worm/" title="Worm">Worm<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">3</span></li></ul>
+  </div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        <table cellspacing ="20">
+            <tr>
+                <td><a href="http://www.52pojie.cn/" target="_blank" title="吾爱破解论坛"><img src="http://smvirus.com/img/links/52logo.gif"></img> </a></td>
+                <td><a href="http://www.sicaril.com/" target="_blank" title="西卡学院"><img src="http://smvirus.com/img/links/sicaril.gif"></img> </a></td>
+            </tr>
+            <tr>
+                <td><a href="http://www.80cert.com/" target="_blank" title="80cert"><img src="http://smvirus.com/img/links/80cert.gif"></img> </a> </td>
+                <td><a href="http://www.unpack.cn/" target="_blank" title="一蓑烟雨论坛"><img src="http://smvirus.com/img/links/fly.gif"></img> </a></td>
+            </tr>
+             <tr>
+                <td><a href="http://www.peshell.com/" target="_blank" title="Peace's Blog"><img src="http://smvirus.com/img/links/peshell.gif"></img> </a></td>
+                <td><a href="http://www.keykernel.org/" target="_blank" title="KeyKernel's Blog"><img src="http://smvirus.com/img/links/keykernel.gif"> </img> </a></td>
+            </tr>
+            <tr>
+                <td><a href="http://www.diaosicode.com/" target="_blank"title="屌丝代码"><img src="http://smvirus.com/img/links/dslogo.gif"></img> </a></td>
+                <td style="white-space: nowrap"><a href="http://hi.baidu.com/willjhw" target="_blank" title="Willj's Blog">WillJ's blog</a></td>
+            </tr>
+        </table>
+        <hr>
+        <table>
+            <tr>
+                <td style="white-space: nowrap"><a href="http://ctext.org/zh">中国哲学书电子化计划</a></td>
+            </tr>
+            <tr>
+                <td style="white-space: nowrap"><a href="http://www.nlc.gov.cn">中国国家数字图书馆</a></td>
+            </tr>
+        </table>
+    </ul>
+</div>
+
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=350&height=119&fansRow=2&ptype=0&speed=0&skin=3&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=1759369187&verifier=b46c844b&dpc=1"></iframe>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello, I&#39;m lSHANG in China. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/lshang" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/LuoXiaohei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/CN_LShang" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:CN_LShang@QQ.CoM" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="http://smvirus.com/about" target="_blank" title="lSHANG">lSHANG</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+    
+});
+</script>
+
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"smVirus"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-49752704-1', 'smvirus.com');  
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+  </body>
+ </html>
