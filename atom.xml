@@ -4,7 +4,7 @@
   <subtitle><![CDATA[永远年轻，永远热泪盈眶！]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://smvirus.com/"/>
-  <updated>2015-03-30T13:44:05.000Z</updated>
+  <updated>2015-03-31T14:50:35.000Z</updated>
   <id>http://smvirus.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://smvirus.com/2015/03/14/anie-vbs-worm-code-analysis/"/>
     <id>http://smvirus.com/2015/03/14/anie-vbs-worm-code-analysis/</id>
     <published>2015-03-14T08:49:47.000Z</published>
-    <updated>2015-03-30T13:44:05.000Z</updated>
+    <updated>2015-03-31T14:50:35.000Z</updated>
     <content type="html"><![CDATA[<p>Anie 是一个VBS蠕虫，命名源于其会创建一系列名为 Annie 的文件，鉴于计算机病毒命名时不应直接使用病毒样本中出现的字符串，所以将其命名为 Anie。<br>该病毒最早出现的时间为2013年，国家为印尼。<br><a id="more"></a></p>
 <h2 id="基本信息">基本信息</h2><blockquote>
 <p>病毒名称：Worm.JS.AutoRun<br>病毒类型：蠕虫<br>样本长度：9,201 字节<br>样本md5：4d1a9f7559de521e1458021a1a7df7cf<br>文件类型：vbs<br>原文件名：Annie.sys<br>出现时间：2013-02-15<br>感染范围：Indonesia<br>感染目标：Intel 386 orlater processors and compatible processors</p>
@@ -31,8 +31,6 @@
     <![CDATA[Anie 是一个VBS蠕虫，其命名源于该样本会创建一系列名为 Annie 的不同格式文件。鉴于计算机病毒命名时不应直接使用样本中的字符串，所以将其命名为Anie。]]>
     
     </summary>
-    
-      <category term="Virus Analysis" scheme="http://smvirus.com/tags/Virus-Analysis/"/>
     
       <category term="Worm" scheme="http://smvirus.com/tags/Worm/"/>
     
@@ -138,7 +136,7 @@
     <link href="http://smvirus.com/2014/04/05/use-codeblock-insert-code/"/>
     <id>http://smvirus.com/2014/04/05/use-codeblock-insert-code/</id>
     <published>2014-04-05T09:13:45.000Z</published>
-    <updated>2015-03-14T19:00:52.000Z</updated>
+    <updated>2015-03-31T14:50:08.000Z</updated>
     <content type="html"><![CDATA[<p>在测试在博文中插入代码时发现，使用缩进方式插入代码，即使在Hexo的配置文件中将line_number设置为true，代码框上也不会显示行号。<br>如下边这段代码直接使用缩进方式插入：</p>
 <pre><code><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>{
     <span class="keyword">return</span> <span class="number">0</span>;
@@ -159,11 +157,9 @@
     
     </summary>
     
-      <category term="Hexo" scheme="http://smvirus.com/tags/Hexo/"/>
-    
       <category term="Markdown" scheme="http://smvirus.com/tags/Markdown/"/>
     
-      <category term="学习笔记" scheme="http://smvirus.com/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+      <category term="Hexo博客" scheme="http://smvirus.com/categories/Hexo%E5%8D%9A%E5%AE%A2/"/>
     
   </entry>
   
@@ -172,7 +168,7 @@
     <link href="http://smvirus.com/2014/04/03/independent-blog-tour/"/>
     <id>http://smvirus.com/2014/04/03/independent-blog-tour/</id>
     <published>2014-04-03T05:19:15.000Z</published>
-    <updated>2014-04-08T05:39:35.000Z</updated>
+    <updated>2015-03-31T14:50:25.000Z</updated>
     <content type="html"><![CDATA[<p>一直以来没有写博客的习惯，发现很多问题在解决之后由于没有及时记录和总结，导致再次遇到时仍然无法解决，从而陷入了死循环中。遂决心开博客写文章，记录及总结近来遇到的问题及产生的想法。</p>
 <p><strong> Hexo博客配置参考： </strong></p>
 <ul>
@@ -184,6 +180,8 @@
     <![CDATA[一直以来没有写博客的习惯，发现很多问题在解决之后由于没有及时记录和总结，导致再次遇到时仍然无法解决，从而陷入了死循环中。遂决心开博客写文章，记录及总结近来遇到的问题及产生的想法。]]>
     
     </summary>
+    
+      <category term="Hexo博客" scheme="http://smvirus.com/categories/Hexo%E5%8D%9A%E5%AE%A2/"/>
     
   </entry>
   
