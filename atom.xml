@@ -4,7 +4,7 @@
   <subtitle><![CDATA[永远年轻，永远热泪盈眶！]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://smvirus.com/"/>
-  <updated>2015-03-31T18:30:54.000Z</updated>
+  <updated>2015-03-31T18:34:08.000Z</updated>
   <id>http://smvirus.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://smvirus.com/2015/03/27/zdxstock-trial-crack/"/>
     <id>http://smvirus.com/2015/03/27/zdxstock-trial-crack/</id>
     <published>2015-03-27T13:43:34.000Z</published>
-    <updated>2015-03-31T18:30:54.000Z</updated>
+    <updated>2015-03-31T18:34:08.000Z</updated>
     <content type="html"><![CDATA[<p>今天发现邮箱里有人请求帮忙破解一款用于自动操盘的软件，于是便看了一下，虽然最终成功破解掉了该软件，但并未将其发送给求助者。在我看来，破解更多是为了学习和研究，在经济条件允许的情况下，为软件付费，支持正版是每个人都该做的。</p>
 <a id="more"></a>
 <h2 id="初次安装">初次安装</h2><p>因为是试用期类的软件，所以按照通常的方式，将系统时间向后调若干年后进行安装，安装后发现试用开始日期仍为今天，并未受系统时间调整而影响，故判断该软件的验证方式可能是服务器验证。<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/zdxstock-trial-crack/trial.jpg" alt=""></p>
@@ -76,7 +76,7 @@
     
       <category term="Crack" scheme="http://smvirus.com/tags/Crack/"/>
     
-      <category term="调试破解" scheme="http://smvirus.com/categories/%E8%B0%83%E8%AF%95%E7%A0%B4%E8%A7%A3/"/>
+      <category term="软件破解" scheme="http://smvirus.com/categories/%E8%BD%AF%E4%BB%B6%E7%A0%B4%E8%A7%A3/"/>
     
   </entry>
   
@@ -109,7 +109,7 @@
     <link href="http://smvirus.com/2014/06/19/python-script-written-with-patch/"/>
     <id>http://smvirus.com/2014/06/19/python-script-written-with-patch/</id>
     <published>2014-06-19T09:15:35.000Z</published>
-    <updated>2015-03-31T18:31:44.000Z</updated>
+    <updated>2015-03-31T18:33:55.000Z</updated>
     <content type="html"><![CDATA[<p>近日对某家族样本虚拟机检测进行分析，应同事要求，写了个Python脚本用于Patch及Load该家族样本。</p>
 <p>因之前没有相关经验，在编写过程中遇到一些问题，现将其整理如下。<br><a id="more"></a></p>
 <h2 id="获取PE文件版本信息">获取PE文件版本信息</h2><p>该家族样本需特定参数才能运行，且参数信息保存在版本信息中，故需要对样本的版本信息进行解析，进而得到运行参数。<br>Python中没有内置PE解析库，无法直接获取PE文件相关信息，经过搜索在<a href="http://stackoverflow.com/questions/580924/python-windows-file-version-attribute" target="_blank" rel="external">这里</a>发现两种方式解析文件版本信息。<br>两种方式均需要安装第三方库，分别是PyWin32及pefile库，因为我有安装PyWin32，所以选择了使用PyWin32的方式进行解析。<br>解析版本信息源码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> win32api</span><br><span class="line"></span><br><span class="line"><span class="comment">#==============================================================================</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getFileProperties</span><span class="params">(fname)</span>:</span></span><br><span class="line"><span class="comment">#==============================================================================</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Read all properties of the given file return them as a dictionary.</span><br><span class="line">    """</span></span><br><span class="line">    propNames = (<span class="string">'Comments'</span>, <span class="string">'InternalName'</span>, <span class="string">'ProductName'</span>,</span><br><span class="line">        <span class="string">'CompanyName'</span>, <span class="string">'LegalCopyright'</span>, <span class="string">'ProductVersion'</span>,</span><br><span class="line">        <span class="string">'FileDescription'</span>, <span class="string">'LegalTrademarks'</span>, <span class="string">'PrivateBuild'</span>,</span><br><span class="line">        <span class="string">'FileVersion'</span>, <span class="string">'OriginalFilename'</span>, <span class="string">'SpecialBuild'</span>)</span><br><span class="line"></span><br><span class="line">    props = &#123;<span class="string">'FixedFileInfo'</span>: <span class="keyword">None</span>, <span class="string">'StringFileInfo'</span>: <span class="keyword">None</span>, <span class="string">'FileVersion'</span>: <span class="keyword">None</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># backslash as parm returns dictionary of numeric info corresponding to VS_FIXEDFILEINFO struc</span></span><br><span class="line">        fixedInfo = win32api.GetFileVersionInfo(fname, <span class="string">'\\'</span>)</span><br><span class="line">        props[<span class="string">'FixedFileInfo'</span>] = fixedInfo</span><br><span class="line">        props[<span class="string">'FileVersion'</span>] = <span class="string">"%d.%d.%d.%d"</span> % (fixedInfo[<span class="string">'FileVersionMS'</span>] / <span class="number">65536</span>,</span><br><span class="line">                fixedInfo[<span class="string">'FileVersionMS'</span>] % <span class="number">65536</span>, fixedInfo[<span class="string">'FileVersionLS'</span>] / <span class="number">65536</span>,</span><br><span class="line">                fixedInfo[<span class="string">'FileVersionLS'</span>] % <span class="number">65536</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># \VarFileInfo\Translation returns list of available (language, codepage)</span></span><br><span class="line">        <span class="comment"># pairs that can be used to retreive string info. We are using only the first pair.</span></span><br><span class="line">        lang, codepage = win32api.GetFileVersionInfo(fname, <span class="string">'\\VarFileInfo\\Translation'</span>)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># any other must be of the form \StringfileInfo\%04X%04X\parm_name, middle</span></span><br><span class="line">        <span class="comment"># two are language/codepage pair returned from above</span></span><br><span class="line"></span><br><span class="line">        strInfo = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> propName <span class="keyword">in</span> propNames:</span><br><span class="line">            strInfoPath = <span class="string">u'\\StringFileInfo\\%04X%04X\\%s'</span> % (lang, codepage, propName)</span><br><span class="line">            <span class="comment">## print str_info</span></span><br><span class="line">            strInfo[propName] = win32api.GetFileVersionInfo(fname, strInfoPath)</span><br><span class="line"></span><br><span class="line">        props[<span class="string">'StringFileInfo'</span>] = strInfo</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> props</span><br></pre></td></tr></table></figure></p>
@@ -125,7 +125,7 @@
     
       <category term="Python" scheme="http://smvirus.com/tags/Python/"/>
     
-      <category term="调试破解" scheme="http://smvirus.com/categories/%E8%B0%83%E8%AF%95%E7%A0%B4%E8%A7%A3/"/>
+      <category term="Python" scheme="http://smvirus.com/categories/Python/"/>
     
   </entry>
   
@@ -134,7 +134,7 @@
     <link href="http://smvirus.com/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/"/>
     <id>http://smvirus.com/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/</id>
     <published>2014-05-06T11:19:46.000Z</published>
-    <updated>2015-03-31T18:30:45.000Z</updated>
+    <updated>2015-03-31T18:34:18.000Z</updated>
     <content type="html"><![CDATA[<p>最近在使用PcxFirefox浏览器时，发现其x64版本在Win8.1系统中一旦触发文件选择框，如下载/打开文件时，浏览器就会崩溃。</p>
 <p>在网上搜索无果后，只好祭出神器Windbg查找原因。在这里对两位帮忙定位问题的同事bianfeng和KeyKernel由衷表示感谢。<br><a id="more"></a></p>
 <h2 id="问题现象">问题现象</h2><p><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/repair-pcxfirefox-crash-in-win81-x64-environment/crash.jpg" alt=""></p>
@@ -173,7 +173,7 @@
     
       <category term="Windbg" scheme="http://smvirus.com/tags/Windbg/"/>
     
-      <category term="调试破解" scheme="http://smvirus.com/categories/%E8%B0%83%E8%AF%95%E7%A0%B4%E8%A7%A3/"/>
+      <category term="调试逆向" scheme="http://smvirus.com/categories/%E8%B0%83%E8%AF%95%E9%80%86%E5%90%91/"/>
     
   </entry>
   
