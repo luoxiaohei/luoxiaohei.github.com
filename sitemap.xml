@@ -4,38 +4,20 @@
     
   <url>
     <loc>http://smvirus.com/2014/06/19/python-script-written-with-patch/</loc>
-    <lastmod>2015-03-31T18:29:34.000Z</lastmod>
+    <lastmod>2015-03-31T18:31:44.000Z</lastmod>
     <data>
         <display>
         <title>用Python写Patch脚本</title>
         <pubTime>2014-06-19T09:15:35.000Z</pubTime>
         
+        <tag>Patch </tag>
+         
         <tag>Python </tag>
          
          
            
              
-              <breadCrumb title="编程学习" url="http://smvirus.com/categories/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://smvirus.com/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/</loc>
-    <lastmod>2015-03-31T18:29:01.000Z</lastmod>
-    <data>
-        <display>
-        <title>修复Win8.1 x64环境下PcxFirefox打开文件崩溃</title>
-        <pubTime>2014-05-06T11:19:46.000Z</pubTime>
-        
-        <tag>Windbg </tag>
-         
-         
-           
-             
-              <breadCrumb title="软件调试" url="http://smvirus.com/categories/%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95/"/>
+              <breadCrumb title="调试破解" url="http://smvirus.com/categories/%E8%B0%83%E8%AF%95%E7%A0%B4%E8%A7%A3/"/>
           
         </display>
     </data>
@@ -44,7 +26,7 @@
     
   <url>
     <loc>http://smvirus.com/2015/03/27/zdxstock-trial-crack/</loc>
-    <lastmod>2015-03-31T18:25:19.000Z</lastmod>
+    <lastmod>2015-03-31T18:30:54.000Z</lastmod>
     <data>
         <display>
         <title>ZDX股票自动交易软件破解</title>
@@ -55,7 +37,27 @@
          
            
              
-              <breadCrumb title="破解手记" url="http://smvirus.com/categories/%E7%A0%B4%E8%A7%A3%E6%89%8B%E8%AE%B0/"/>
+              <breadCrumb title="调试破解" url="http://smvirus.com/categories/%E8%B0%83%E8%AF%95%E7%A0%B4%E8%A7%A3/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://smvirus.com/2014/05/06/repair-pcxfirefox-crash-in-win81-x64-environment/</loc>
+    <lastmod>2015-03-31T18:30:45.000Z</lastmod>
+    <data>
+        <display>
+        <title>修复Win8.1 x64环境下PcxFirefox打开文件崩溃</title>
+        <pubTime>2014-05-06T11:19:46.000Z</pubTime>
+        
+        <tag>Windbg </tag>
+         
+         
+           
+             
+              <breadCrumb title="调试破解" url="http://smvirus.com/categories/%E8%B0%83%E8%AF%95%E7%A0%B4%E8%A7%A3/"/>
           
         </display>
     </data>
