@@ -4,7 +4,7 @@
   <subtitle><![CDATA[永远年轻，永远热泪盈眶！]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://smvirus.com/"/>
-  <updated>2015-03-31T18:34:08.000Z</updated>
+  <updated>2015-04-01T15:16:02.000Z</updated>
   <id>http://smvirus.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://smvirus.com/2015/03/27/zdxstock-trial-crack/"/>
     <id>http://smvirus.com/2015/03/27/zdxstock-trial-crack/</id>
     <published>2015-03-27T13:43:34.000Z</published>
-    <updated>2015-03-31T18:34:08.000Z</updated>
+    <updated>2015-04-01T15:16:02.000Z</updated>
     <content type="html"><![CDATA[<p>今天发现邮箱里有人请求帮忙破解一款用于自动操盘的软件，于是便看了一下，虽然最终成功破解掉了该软件，但并未将其发送给求助者。在我看来，破解更多是为了学习和研究，在经济条件允许的情况下，为软件付费，支持正版是每个人都该做的。</p>
 <a id="more"></a>
 <h2 id="初次安装">初次安装</h2><p>因为是试用期类的软件，所以按照通常的方式，将系统时间向后调若干年后进行安装，安装后发现试用开始日期仍为今天，并未受系统时间调整而影响，故判断该软件的验证方式可能是服务器验证。<br><img src="http://7xicmh.com1.z0.glb.clouddn.com/blog/zdxstock-trial-crack/trial.jpg" alt=""></p>
@@ -44,8 +44,8 @@
 <li>将注册信息发送给服务器验证</li>
 <li>根据返回信息选择相应的软件版本</li>
 </ol>
-<p>同时知道了服务器返回的信息包含10个字段，通过更加深入的分析，我们可以构造出一个完整的返回数据包，但是这里我们使用一个更加便捷的方法，直接抓取服务器返回的数据包。</p>
-<h3 id="分析数据包">分析数据包</h3><p>重新运行程序，打开网络分析工具，抓取验证注册信息时客户端与服务端的通信数据包，可以看到通讯数据包如下</p>
+<p>同时知道了服务器返回的信息包含10个字段，通过更加深入的分析，我们可以构造出一个完整的返回数据包，但是这里我们使用一个更加便捷的方法，直接抓取客户端和服务器的通讯数据包。</p>
+<h3 id="分析数据包">分析数据包</h3><p>重新运行程序，打开网络分析工具，抓取验证注册信息时客户端与服务端的通讯数据包，可以看到通讯数据包如下</p>
 <figure class="highlight"><figcaption><span>POST</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EgzwaHzHSBvwy514aiLfP7BT8AVd67toYdCm54a89H0tIXsklk63HRHjtiRPGBnTHv/VlybkxaYQQN1wjlhrjA==</span><br></pre></td></tr></table></figure>
 <figure class="highlight"><figcaption><span>RECV</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g8egIVo7wykjOBds0v78BK+qvUxiLB/SwQU5bellpG+aG8Lwb25udRXEwB3T9EfW81esMT+R44MeSIr2glg8jWy1vVByXkISp8t+NoRmjOmCLRQ77lAyH5WrYmQ2XNkcIJKBtb77dks=</span><br></pre></td></tr></table></figure>
 <p>通过程序内的解密方法，得到明文信息如下<br><figure class="highlight"><figcaption><span>POST</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">True|&#20146;|123456|0142-3111-1313-7210-1120|&#35831;&#22312;&#36825;&#37324;&#36755;&#20837;&#27880;&#20876;&#30721;</span><br></pre></td></tr></table></figure></p>
