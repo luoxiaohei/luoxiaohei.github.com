@@ -24,7 +24,7 @@
 
 
 
-  <meta name="keywords" content="病毒分析,编程,逆向,调试,smVirus,analysis,virus,code,python" />
+  <meta name="keywords" content="Autoit,Decompile," />
 
 
 
@@ -47,7 +47,7 @@
   </script>
 
 
-  <title> 独立博客之旅 // SMVirus </title>
+  <title> 反编译64位AutoIt程序 // SMVirus </title>
 </head>
 
 <body>
@@ -135,7 +135,7 @@
           
           
             
-              独立博客之旅
+              反编译64位AutoIt程序
             
           
         </h1>
@@ -143,14 +143,14 @@
 
       <div class="post-meta">
         <span class="post-time">
-          发表于 2014-04-03
+          发表于 2015-05-20
         </span>
 
         
           <span class="post-category">
             &nbsp; | &nbsp; 分类于
             
-              <a href="/categories/随笔/">随笔</a>
+              <a href="/categories/奇淫技巧/">奇淫技巧</a>
 
               
               
@@ -163,8 +163,8 @@
           
             <span class="post-comments-count">
             &nbsp; | &nbsp;
-            <a href="/2014/04/03/independent-blog-tour/#comments" >
-              <span class="post-comments-count ds-thread-count" data-thread-key="2014/04/03/independent-blog-tour/"></span>
+            <a href="/2015/05/20/decompiling-compiled-autoit-scripts-64bit/#comments" >
+              <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/20/decompiling-compiled-autoit-scripts-64bit/"></span>
             </a>
           </span>
           
@@ -178,28 +178,38 @@
       
 
       
-        <p>一直以来没有写博客的习惯，发现很多问题在解决之后由于没有及时记录和总结，导致再次遇到时仍然无法解决，从而陷入了死循环中。遂决心开博客写文章，记录及总结近来遇到的问题及产生的想法。</p>
-<p><strong> Hexo博客配置参考： </strong></p>
-<ul>
-<li><a href="http://ibruce.info/2013/11/22/hexo-your-blog/" target="_blank" rel="external">hexo你的博客</a></li>
-<li><a href="http://kescoode.com/2013/11/17/github-page-and-hexo-guide/" target="_blank" rel="external">Github Pages与Hexo建个人博客流程 </a></li>
-</ul>
+        <p><a href="https://www.autoitscript.com/site/autoit/" target="_blank" rel="external">AutoIt</a>（读音aw-tow-it）是一个用于Microsoft Windows的免费自动化语言。AutoIt脚本编译后的程序是通过解释器解释执行的，所以很难直接调试和逆向分析。但与其他解释执行的语言相同，AutoIt编译后的程序可以通过反编译工具得到程序源代码。<a href="https://exe2aut.coom/" target="_blank" rel="external">exe2aut</a>就是一款专门用来反编译AutoIt程序的工具，但是目前exe2aut工具只支持32位AutoIt程序的反编译，并不支持64位AutoIt程序的反编译，故本文将介绍如何反编译64位的AutoIt程序。</p>
+<a id="more"></a>
+<h2 id="反编译64位AutoIt程序的基本思路">反编译64位AutoIt程序的基本思路</h2><p>反编译64位AutoIt程序的基本思路是将64位程序转换为32位程序，然后执行32位程序的反编译流程。因为AutoIt程序是解释执行的，所以我们可以通过替换解释器的方式来将64位程序转换为32位程序。</p>
+<h2 id="反编译64位AutoIt程序的完整流程">反编译64位AutoIt程序的完整流程</h2><h3 id="获取AutoIt解释器">获取AutoIt解释器</h3><p>AutoIt的解释器程序为Aut2Exe目录中的AutoItSC.bin文件（新版中解释器已嵌入到Aut2Exe.exe）<br>可通过以下链接进行下载v3.3.8.1版本的安装文件并解压获取<br><a href="https://www.autoitscript.com/autoit3/files/archive/autoit/autoit-v3.3.8.1.zip" target="_blank" rel="external">https://www.autoitscript.com/autoit3/files/archive/autoit/autoit-v3.3.8.1.zip</a><br>或直接通过以下连接下载<br><a href="http://smvirus.com/2015/05/20/decompiling-compiled-autoit-scripts-64bit/AutoItSC.zip" target="_blank" rel="external">http://smvirus.com/2015/05/20/decompiling-compiled-autoit-scripts-64bit/AutoItSC.zip</a></p>
+<h3 id="提取编译后的脚本">提取编译后的脚本</h3><h4 id="v3-3-8-1之前版本编译">v3.3.8.1之前版本编译</h4><p>编译后的AutoIt脚本被保存在程序末尾，可以通过特征码来定位到脚本数据<br>起始特征码： <code>A3484BBE986C4AA9994C530A86D6487D</code><br>结束特征码： <code>A91CCBDD4155332145413036</code></p>
+<h4 id="v3-3-8-1之后版本编译">v3.3.8.1之后版本编译</h4><p>编译后的AutoIt脚本被保存在资源中，可通过PE资源查看器进行提取或通过上述特征码定位提取</p>
+<h3 id="构造32位的AutoIt程序">构造32位的AutoIt程序</h3><p>将脚本数据直接追加到AutoItSC.bin文件末尾（v3.3.8.1版本的程序脚本数据存放在程序末尾）并另存为filename.x86.exe就完成了64位到32位AutoIt程序的转换。</p>
+<h3 id="反编译32位AutoIt程序">反编译32位AutoIt程序</h3><p>使用exe2aut工具反编译转换后的32位程序，此时得到的源码就是64位AutoIt程序的源码。</p>
 
       
     </div>
 
     <div class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Autoit/"> #Autoit </a>
+          
+            <a href="/tags/Decompile/"> #Decompile </a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2014/04/05/use-codeblock-insert-code/">使用codeblock插入代码</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/27/zdxstock-trial-crack/">ZDX股票自动交易软件破解</a>
             
           </div>
         </div>
@@ -215,8 +225,8 @@
     
       <div class="comments" id="comments">
         
-          <div class="ds-thread" data-thread-key="2014/04/03/independent-blog-tour/"
-               data-title="独立博客之旅" data-url="http://smvirus.com/2014/04/03/independent-blog-tour/">
+          <div class="ds-thread" data-thread-key="2015/05/20/decompiling-compiled-autoit-scripts-64bit/"
+               data-title="反编译64位AutoIt程序" data-url="http://smvirus.com/2015/05/20/decompiling-compiled-autoit-scripts-64bit/">
           </div>
         
       </div>
@@ -332,7 +342,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#反编译64位AutoIt程序的基本思路"><span class="nav-number">1.</span> <span class="nav-text">反编译64位AutoIt程序的基本思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反编译64位AutoIt程序的完整流程"><span class="nav-number">2.</span> <span class="nav-text">反编译64位AutoIt程序的完整流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取AutoIt解释器"><span class="nav-number">2.1.</span> <span class="nav-text">获取AutoIt解释器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提取编译后的脚本"><span class="nav-number">2.2.</span> <span class="nav-text">提取编译后的脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#v3-3-8-1之前版本编译"><span class="nav-number">2.2.1.</span> <span class="nav-text">v3.3.8.1之前版本编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#v3-3-8-1之后版本编译"><span class="nav-number">2.2.2.</span> <span class="nav-text">v3.3.8.1之后版本编译</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造32位的AutoIt程序"><span class="nav-number">2.3.</span> <span class="nav-text">构造32位的AutoIt程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反编译32位AutoIt程序"><span class="nav-number">2.4.</span> <span class="nav-text">反编译32位AutoIt程序</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

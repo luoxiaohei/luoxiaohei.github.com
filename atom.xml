@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://smvirus.com/"/>
-  <updated>2015-04-27T17:09:38.000Z</updated>
+  <updated>2015-05-20T15:15:22.000Z</updated>
   <id>http://smvirus.com/</id>
   
   <author>
@@ -13,6 +13,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[反编译64位AutoIt程序]]></title>
+    <link href="http://smvirus.com/2015/05/20/decompiling-compiled-autoit-scripts-64bit/"/>
+    <id>http://smvirus.com/2015/05/20/decompiling-compiled-autoit-scripts-64bit/</id>
+    <published>2015-05-20T12:22:08.000Z</published>
+    <updated>2015-05-20T15:15:22.000Z</updated>
+    <content type="html"><![CDATA[<p><a href="https://www.autoitscript.com/site/autoit/" target="_blank" rel="external">AutoIt</a>（读音aw-tow-it）是一个用于Microsoft Windows的免费自动化语言。AutoIt脚本编译后的程序是通过解释器解释执行的，所以很难直接调试和逆向分析。但与其他解释执行的语言相同，AutoIt编译后的程序可以通过反编译工具得到程序源代码。<a href="https://exe2aut.coom/" target="_blank" rel="external">exe2aut</a>就是一款专门用来反编译AutoIt程序的工具，但是目前exe2aut工具只支持32位AutoIt程序的反编译，并不支持64位AutoIt程序的反编译，故本文将介绍如何反编译64位的AutoIt程序。</p>
+<a id="more"></a>
+<h2 id="反编译64位AutoIt程序的基本思路">反编译64位AutoIt程序的基本思路</h2><p>反编译64位AutoIt程序的基本思路是将64位程序转换为32位程序，然后执行32位程序的反编译流程。因为AutoIt程序是解释执行的，所以我们可以通过替换解释器的方式来将64位程序转换为32位程序。</p>
+<h2 id="反编译64位AutoIt程序的完整流程">反编译64位AutoIt程序的完整流程</h2><h3 id="获取AutoIt解释器">获取AutoIt解释器</h3><p>AutoIt的解释器程序为Aut2Exe目录中的AutoItSC.bin文件（新版中解释器已嵌入到Aut2Exe.exe）<br>可通过以下链接进行下载v3.3.8.1版本的安装文件并解压获取<br><a href="https://www.autoitscript.com/autoit3/files/archive/autoit/autoit-v3.3.8.1.zip" target="_blank" rel="external">https://www.autoitscript.com/autoit3/files/archive/autoit/autoit-v3.3.8.1.zip</a><br>或直接通过以下连接下载<br><a href="http://smvirus.com/2015/05/20/decompiling-compiled-autoit-scripts-64bit/AutoItSC.zip" target="_blank" rel="external">http://smvirus.com/2015/05/20/decompiling-compiled-autoit-scripts-64bit/AutoItSC.zip</a></p>
+<h3 id="提取编译后的脚本">提取编译后的脚本</h3><h4 id="v3-3-8-1之前版本编译">v3.3.8.1之前版本编译</h4><p>编译后的AutoIt脚本被保存在程序末尾，可以通过特征码来定位到脚本数据<br>起始特征码： <code>A3484BBE986C4AA9994C530A86D6487D</code><br>结束特征码： <code>A91CCBDD4155332145413036</code></p>
+<h4 id="v3-3-8-1之后版本编译">v3.3.8.1之后版本编译</h4><p>编译后的AutoIt脚本被保存在资源中，可通过PE资源查看器进行提取或通过上述特征码定位提取</p>
+<h3 id="构造32位的AutoIt程序">构造32位的AutoIt程序</h3><p>将脚本数据直接追加到AutoItSC.bin文件末尾（v3.3.8.1版本的程序脚本数据存放在程序末尾）并另存为filename.x86.exe就完成了64位到32位AutoIt程序的转换。</p>
+<h3 id="反编译32位AutoIt程序">反编译32位AutoIt程序</h3><p>使用exe2aut工具反编译转换后的32位程序，此时得到的源码就是64位AutoIt程序的源码。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[AutoIt（读音aw-tow-it）是一个用于Microsoft Windows的免费自动化语言。AutoIt脚本编译后的程序是通过解释器解释执行的，所以很难直接调试和逆向分析。但与其他解释执行的语言相同，AutoIt编译后的程序可以通过反编译工具得到程序源代码。exe2aut就是一款专门用来反编译AutoIt程序的工具，但是目前exe2aut工具只支持32位AutoIt程序的反编译，并不支持64位AutoIt程序的反编译，故本文将介绍如何反编译64位的AutoIt程序。]]>
+    
+    </summary>
+    
+      <category term="Autoit" scheme="http://smvirus.com/tags/Autoit/"/>
+    
+      <category term="Decompile" scheme="http://smvirus.com/tags/Decompile/"/>
+    
+      <category term="奇淫技巧" scheme="http://smvirus.com/categories/%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[ZDX股票自动交易软件破解]]></title>
@@ -109,7 +137,7 @@
     <link href="http://smvirus.com/2014/06/19/python-script-written-with-patch/"/>
     <id>http://smvirus.com/2014/06/19/python-script-written-with-patch/</id>
     <published>2014-06-19T09:15:35.000Z</published>
-    <updated>2015-04-27T17:08:34.000Z</updated>
+    <updated>2015-05-20T12:57:11.000Z</updated>
     <content type="html"><![CDATA[<p>近日对某家族样本虚拟机检测进行分析，应同事要求，写了个Python脚本用于Patch及Load该家族样本。</p>
 <p>因之前没有相关经验，在编写过程中遇到一些问题，现将其整理如下。<br><a id="more"></a></p>
 <h2 id="获取PE文件版本信息">获取PE文件版本信息</h2><p>该家族样本需特定参数才能运行，且参数信息保存在版本信息中，故需要对样本的版本信息进行解析，进而得到运行参数。<br>Python中没有内置PE解析库，无法直接获取PE文件相关信息，经过搜索在<a href="http://stackoverflow.com/questions/580924/python-windows-file-version-attribute" target="_blank" rel="external">这里</a>发现两种方式解析文件版本信息。<br>两种方式均需要安装第三方库，分别是PyWin32及pefile库，因为我有安装PyWin32，所以选择了使用PyWin32的方式进行解析。<br>解析版本信息源码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> win32api</span><br><span class="line"></span><br><span class="line"><span class="comment">#==============================================================================</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getFileProperties</span><span class="params">(fname)</span>:</span></span><br><span class="line"><span class="comment">#==============================================================================</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    Read all properties of the given file return them as a dictionary.</span><br><span class="line">    """</span></span><br><span class="line">    propNames = (<span class="string">'Comments'</span>, <span class="string">'InternalName'</span>, <span class="string">'ProductName'</span>,</span><br><span class="line">        <span class="string">'CompanyName'</span>, <span class="string">'LegalCopyright'</span>, <span class="string">'ProductVersion'</span>,</span><br><span class="line">        <span class="string">'FileDescription'</span>, <span class="string">'LegalTrademarks'</span>, <span class="string">'PrivateBuild'</span>,</span><br><span class="line">        <span class="string">'FileVersion'</span>, <span class="string">'OriginalFilename'</span>, <span class="string">'SpecialBuild'</span>)</span><br><span class="line"></span><br><span class="line">    props = &#123;<span class="string">'FixedFileInfo'</span>: <span class="keyword">None</span>, <span class="string">'StringFileInfo'</span>: <span class="keyword">None</span>, <span class="string">'FileVersion'</span>: <span class="keyword">None</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># backslash as parm returns dictionary of numeric info corresponding to VS_FIXEDFILEINFO struc</span></span><br><span class="line">        fixedInfo = win32api.GetFileVersionInfo(fname, <span class="string">'\\'</span>)</span><br><span class="line">        props[<span class="string">'FixedFileInfo'</span>] = fixedInfo</span><br><span class="line">        props[<span class="string">'FileVersion'</span>] = <span class="string">"%d.%d.%d.%d"</span> % (fixedInfo[<span class="string">'FileVersionMS'</span>] / <span class="number">65536</span>,</span><br><span class="line">                fixedInfo[<span class="string">'FileVersionMS'</span>] % <span class="number">65536</span>, fixedInfo[<span class="string">'FileVersionLS'</span>] / <span class="number">65536</span>,</span><br><span class="line">                fixedInfo[<span class="string">'FileVersionLS'</span>] % <span class="number">65536</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># \VarFileInfo\Translation returns list of available (language, codepage)</span></span><br><span class="line">        <span class="comment"># pairs that can be used to retreive string info. We are using only the first pair.</span></span><br><span class="line">        lang, codepage = win32api.GetFileVersionInfo(fname, <span class="string">'\\VarFileInfo\\Translation'</span>)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># any other must be of the form \StringfileInfo\%04X%04X\parm_name, middle</span></span><br><span class="line">        <span class="comment"># two are language/codepage pair returned from above</span></span><br><span class="line"></span><br><span class="line">        strInfo = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> propName <span class="keyword">in</span> propNames:</span><br><span class="line">            strInfoPath = <span class="string">u'\\StringFileInfo\\%04X%04X\\%s'</span> % (lang, codepage, propName)</span><br><span class="line">            <span class="comment">## print str_info</span></span><br><span class="line">            strInfo[propName] = win32api.GetFileVersionInfo(fname, strInfoPath)</span><br><span class="line"></span><br><span class="line">        props[<span class="string">'StringFileInfo'</span>] = strInfo</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> props</span><br></pre></td></tr></table></figure></p>
@@ -125,7 +153,7 @@
     
       <category term="Python" scheme="http://smvirus.com/tags/Python/"/>
     
-      <category term="编程技巧" scheme="http://smvirus.com/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/"/>
+      <category term="奇淫技巧" scheme="http://smvirus.com/categories/%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
