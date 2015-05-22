@@ -1,92 +1,116 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="google-site-verification" content="6O--eeoQkyybt3zj3XXCwFh4tp4KuMfjMLLuoxFqOFo" />
-    <meta name="keywords" content="病毒分析,编程,逆向,调试,smVirus,analysis,virus,code,python" />
-    <link rel="stylesheet" type="text/css" href="assets/css/main.css"/>
+
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta name="google-site-verification" content="6O--eeoQkyybt3zj3XXCwFh4tp4KuMfjMLLuoxFqOFo"
+    />
+    <meta name="keywords" content="病毒分析,编程,逆向,调试,smVirus,analysis,virus,code,python"
+    />
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css" />
     <script type="text/javascript">
-      var _hmt = _hmt || [];
-      (function() {
+      var _hmt = _hmt || []; (function() {
         var hm = document.createElement("script");
         hm.src = "//hm.baidu.com/hm.js?ad2b0a37daea1f399c1929c99bf31fa8";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
       })();
     </script>
-    <title>SMVirus - Home page of lShang</title>
-</head>
+    <title>
+      SMVirus - Home page of lShang
+    </title>
+  </head>
 
-<body>
-<div class="vi">
-    <div class="sidebar">
+  <body>
+    <div class="vi">
+      <div class="sidebar">
         <div class="header">
-            <h1>SMVirus</h1>
-            <div class="quote">
-              <p>失败的方式只有一种，那就是半途而废。</p>
-            </div>
+          <h1>
+            SMVirus
+          </h1>
+          <div class="quote">
+            <p class="quote-text animate-init">
+              失败的方式只有一种，那就是半途而废。
+            </p>
+          </div>
         </div>
         <div class="menu">
-            <a href="https://github.com/luoxiaohei" class="animate-init">GitHub</a>
-            <a href="http://blog.smvirus.com" class="animate-init">Blog</a>
-            <a href="http://weibo.com/lshang" class="animate-init">WeiBo</a>
-            <a href="MailTo:Admin@SMVirus.CoM" class="animate-init">Mail</a>
+          <a href="https://github.com/luoxiaohei" class="animate-init">
+            GitHub
+          </a>
+          <a href="http://blog.smvirus.com" class="animate-init">
+            Blog
+          </a>
+          <a href="http://weibo.com/lshang" class="animate-init">
+            WeiBo
+          </a>
+          <a href="MailTo:Admin@SMVirus.CoM" class="animate-init">
+            Mail
+          </a>
         </div>
         <div class="location">
-            <i class="location-icon"></i>
-            <span class="location-text animate-init">ShenZhen - China</span>
+          <i class="location-icon">
+          </i>
+          <span class="location-text animate-init">
+            ShenZhen - China
+          </span>
         </div>
+      </div>
+      <div class="content">
+        <span class="close">
+          close
+        </span>
+      </div>
     </div>
-
-    <div class="content">
-        <span class="close">close</span>
-    </div>
-</div>
-<script type="text/javascript" src="assets/vendors/jquery/index.js"></script>
-<script>
-    $(document).ready(function () {
+    <script type="text/javascript" src="assets/vendors/jquery/index.js">
+    </script>
+    <script>
+      $(document).ready(function() {
         var delay = 1;
         var DELAY_STEP = 200;
-        var animationOptions = { opacity: 1, top: 0};
-
-        $('h1').animate(animationOptions).promise()
-                .pipe(animateMain)
-                .pipe(animateLocationIcon);
-
+        var animationOptions = {
+          opacity: 1,
+          top: 0
+        };
+        $('h1').animate(animationOptions).promise().pipe(animateMain).pipe(animateLocationIcon);
         function animateMain() {
-            var dfd = $.Deferred();
-            var els = $('.animate-init');
-            var size = els.size();
-
-            els.each(function (index, el) {
-                delay++;
-                $(el).delay(index * DELAY_STEP)
-                        .animate(animationOptions);
-                (size - 1 === index) && dfd.resolve();
-            });
-            return dfd.promise();
+          var dfd = $.Deferred();
+          var els = $('.animate-init');
+          var size = els.size();
+          els.each(function(index, el) {
+            delay++;
+            $(el).delay(index * DELAY_STEP).animate(animationOptions); (size - 1 === index) && dfd.resolve();
+          });
+          return dfd.promise();
         }
-
         function animateLocationIcon() {
-            $('.location-icon').delay(delay * DELAY_STEP).animate({
-                opacity: 1,
-                top: 0
-            }).promise().done(animationQuote);
+          $('.location-icon').delay(delay * DELAY_STEP).animate({
+            opacity: 1,
+            top: 0
+          }).promise().done(animationQuote);
         }
-
         function animationQuote() {}
-    });
-</script>
-<script type="text/javascript">
-  (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-    e.src='//www.google-analytics.com/analytics.js';
-    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-  ga('create','UA-49752704-1', 'smvirus.com');
-  ga('send','pageview');
-</script>
-</body>
+      });
+    </script>
+    <script type="text/javascript">
+      (function(b, o, i, l, e, r) {
+        b.GoogleAnalyticsObject = l;
+        b[l] || (b[l] = function() { (b[l].q = b[l].q || []).push(arguments)
+        });
+        b[l].l = +new Date;
+        e = o.createElement(i);
+        r = o.getElementsByTagName(i)[0];
+        e.src = '//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e, r)
+      } (window, document, 'script', 'ga'));
+      ga('create', 'UA-49752704-1', 'smvirus.com');
+      ga('send', 'pageview');
+    </script>
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+    </script>
+  </body>
+
 </html>
